@@ -27,7 +27,7 @@ app.use("/",userroutes)
 // })
 connectDB().then(()=>{
     console.log("connection succesfull ")
-    app.listen(300,()=>{
+    app.listen(7777,()=>{
     console.log("server is on way of port:300")
 })
 }).catch(err=>{
