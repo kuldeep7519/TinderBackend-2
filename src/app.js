@@ -12,7 +12,7 @@ dns.setServers(["8.8.8.8"])
 app.use(express.json())
 app.use(cookieparser())
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"http://3.106.119.176:80",
     credentials:true
 }))
 
