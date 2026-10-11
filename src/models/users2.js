@@ -19,7 +19,7 @@ const userschema = mongoose.Schema(
     },
     lastname: {
       type: String,
-      default: "your last name is yadav ",
+      default: "yadav ",
     },
     // now we are going to write the validation for the email should be correct and valid it includes @gmail.com so we are going to use the lib is validator 
 
@@ -42,8 +42,7 @@ const userschema = mongoose.Schema(
       type: String,
       unique: true,
       sparse:true,
-      minLength: 10,
-      maxLength: 10
+       
     },
     // we can also add skills here this can be multiple then it is array of string .
     skills: {

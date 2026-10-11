@@ -24,6 +24,19 @@ authRouter.post("/signup",async (req , res)=>{
     var  password=HashPswd;
     const user=new User({password,firstname,lastname,phoneno,email});
     await user.save();
+    const token = jwt.sign(
+  { _id: user._id },
+  "secdretd passwrodhai@23",
+  { expiresIn: "1h" }
+);
+
+// Set authentication cookie
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: false, // Localhost HTTP development
+  sameSite: "lax",
+  maxAge: 60 * 60 * 1000,
+});
     res.send(user);
     }
     catch(err){

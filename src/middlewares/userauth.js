@@ -10,7 +10,7 @@ const userAUTH=async (req,res,next)=>{
          if(!token){
             res.status(401).send("please log in . ")
          }
-         console.log("jhadu")
+       
          const decodedmessage=await jwt.verify(token,"secdretd passwrodhai@23")
          const {_id}=decodedmessage;
          const user=await User.findById(_id)
@@ -21,9 +21,8 @@ const userAUTH=async (req,res,next)=>{
          req.user=user; // this is the way of attaching the user in the req u can see here. 
         
 
-console.log("BEFORE NEXT");
+
 next();
-console.log("AFTER NEXT");
      }catch(err){
         res.status(400).send(err.message)
      }

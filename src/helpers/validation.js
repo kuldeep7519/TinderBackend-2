@@ -5,9 +5,9 @@ const validation=(req)=>{
         throw new Error("please enter  a name ")
     }
     // these all things we define it in the db level . we want tight security 
-    if(phoneno.length!=10){
-        throw new Error("please enter valid phone no. ")
-    }
+    if (!phoneno  ) {
+  throw new Error("Please enter a valid 10-digit phone number.");
+}
     if(!validator.isEmail(email)){
         throw new Error("please enter valid email id ")
     }
