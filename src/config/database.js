@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
+  console.log("1")
   await mongoose.connect(
     "mongodb+srv://kuldeeprao9812_db_user:Kannu123@cluster0.hf3i9xu.mongodb.net/Tinder",
   );
