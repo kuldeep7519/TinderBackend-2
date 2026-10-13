@@ -8,7 +8,7 @@ const userAUTH=async (req,res,next)=>{
          
          const {token}=req.cookies
          if(!token){
-            res.status(401).send("please log in . ")
+            return res.status(401).send("please log in . ")
          }
        
          const decodedmessage=await jwt.verify(token,"secdretd passwrodhai@23")
@@ -24,7 +24,7 @@ const userAUTH=async (req,res,next)=>{
 
 next();
      }catch(err){
-        res.status(400).send(err.message)
+         return res.status(400).send(err.message)
      }
       
 }
