@@ -42,40 +42,48 @@ Connections.post("/request/send/:status/:userId",userAUTH,async (req,res)=>{
     }
     
 })
-Connections.post("/request/review/:status/:requestID",userAUTH,async(req,res)=>{
-    try{
-        
-        const status=req.params.status
-        const allowedstatus=["accepted","rejected"]
-        if(!allowedstatus.includes(status)){
-            throw new Error("allowed status is not valid ");
-        }
-        const loggedINID=req.user._id
-        const requestID=req.params.requestID;
-         
-        // const ISVALIDREQUESTID=await ConnectionModel.findOne({
-        //     status:"intrested",
-        //     _id:requestID,
-        //     toUserId:loggedINID
-        // })
-          const ISVALIDREQUESTID = await ConnectionModel.findOne({
-            status: "intrested",
-            fromUserId:requestID,
-            toUserId: loggedINID
+Connections.post(
+  "/request/review/:status/:requestID",
+  userAUTH,
+  async (req, res) => {
+    try {
+      const { status, requestID } = req.params;
+      const allowedStatus = ["accepted", "rejected"];
+
+      if (!allowedStatus.includes(status)) {
+        return res.status(400).json({
+          message: "Invalid status",
         });
-        if(!ISVALIDREQUESTID){
-            return res.status(404).json({
-                message:"request is not vvalid dear uhh it sucks "
-            })
-        }
-        ISVALIDREQUESTID.status=status;
-        const data= await ISVALIDREQUESTID.save();
-        res.json({
-            message:"sab thik hai ",
-            data
-        })
-    }catch(err){
-        res.status(400).send(err.message)
+      }
+
+      const loggedINID = req.user._id;
+
+      // Find request by connection request ID
+      const validRequest = await ConnectionModel.findOne({
+        _id: requestID,
+        status: "intrested",
+        toUserId: loggedINID,
+      });
+
+      if (!validRequest) {
+        return res.status(404).json({
+          message: "Connection request not found",
+        });
+      }
+
+      validRequest.status = status;
+
+      const data = await validRequest.save();
+
+      return res.status(200).json({
+        message: `Request ${status} successfully`,
+        data,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: err.message,
+      });
     }
-})
+  }
+);
 module.exports=Connections
