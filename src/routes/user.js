@@ -64,11 +64,12 @@ userroutes.get("/user/feed",userAUTH,async(req,res)=>{
     // 4. already sent the connection request
     const loggedinuser=req.user
     
-    const page=parseInt(req.query.page)||1; // this or we are using if user does not give the params then take 1   and whateveer comes from the query come as a string so we need a interger .thats why we are using parseInt 
-    let limit=parseInt(req.query.limit)||10;
-    // if we pass limit =10000000 then it will freeze and hang our database to fix that sanitize the data . 
-    limit=limit>50?50:limit
-    const skip=(page-1)*limit
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+let limit = parseInt(req.query.limit) || 10;
+
+limit = Math.min(50, Math.max(1, limit));
+
+const skip = (page - 1) * limit;
     // finding all connection request (sent +received)
     const connectionrequest= await connectionModel.find({
       $or:[
@@ -93,6 +94,9 @@ userroutes.get("/user/feed",userAUTH,async(req,res)=>{
         {_id:{$ne:loggedinuser._id}}
       ]
     }).select("firstname lastname phoneno email skills").skip(skip).limit(limit)
+    console.log("Logged-in user:", loggedinuser._id);
+console.log("All users:", await User.find({}, "firstname email"));
+console.log("Hidden IDs:", Array.from(Hidedata));
     res.send(feeduser)
   }catch(err){
     res.status(404).json({message:err.message})
